@@ -1,0 +1,45 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+*.bin
+
+# Vendor directory
+/vendor/
+
+# Dependencies
+go.sum
+go.mod
+
+# Swagger files
+docs/*
+
+# Config files
+*.env
+*.yaml
+*.toml
+*.ini
+
+# IDE/editor files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs and cache
+*.log
+*.out
+*.log.*
+*.cache
+*.tmp
+*.swp
+
+# Docker-related
+docker-compose.override.yml
+.env.docker
+
