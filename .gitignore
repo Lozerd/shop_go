@@ -8,10 +8,6 @@
 # Vendor directory
 /vendor/
 
-# Dependencies
-go.sum
-go.mod
-
 # Swagger files
 docs/*
 
@@ -20,6 +16,9 @@ docs/*
 *.yaml
 *.toml
 *.ini
+
+# Config files, but examples
+!*.example.yaml
 
 # IDE/editor files
 .vscode/
@@ -39,7 +38,5 @@ Thumbs.db
 *.tmp
 *.swp
 
-# Docker-related
-docker-compose.override.yml
-.env.docker
-
+# Build files
+main

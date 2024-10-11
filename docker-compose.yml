@@ -1,0 +1,64 @@
+volumes:
+  app-db-data:
+
+services:
+  app:
+    mem_limit: ${APP_MEM_LIMIT:-1G}
+    cpus: ${APP_CPUS:-2}
+    build: .
+    command: /app/main
+    environment:
+      - GIN_MODE=release
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - db
+      - kafka
+      - zookeeper
+    networks:
+        - app-network
+
+  db:
+    image: postgres:12
+    mem_limit: ${DB_MEM_LIMIT:-1G}
+    cpus: ${DB_CPUS:-2}
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgressql/data/pgdata
+    volumes:
+      - app-db-data:/var/lib/postgressql/data/pgdata
+    healthcheck:
+      test: /usr/bin/pg_isready
+      interval: 5s
+      timeout: 10s
+      retries: 120
+    networks:
+        - app-network
+
+
+  kafka:
+    image: bitnami/kafka:latest
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    ports:
+      - "2181:2181"
+
+networks:
+  app-network:
+    driver: bridge
