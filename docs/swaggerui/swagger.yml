@@ -1,0 +1,108 @@
+components:
+  parameters:
+    Authorization:
+      in: header
+      name: Authorization
+      schema:
+        type: string
+  schemas:
+    Error:
+      properties:
+        code:
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+          type: object
+      type: object
+    RequestHeaders:
+      properties:
+        Authorization:
+          type: string
+      type: object
+    User:
+      properties:
+        id:
+          description: User identity
+          example: 100
+          type: integer
+        name:
+          example: Parvez
+          type: string
+      type: object
+    UsersResponse:
+      properties:
+        users:
+          example:
+          - id: 100
+            name: Parvez
+          items:
+            properties:
+              id:
+                description: User identity
+                example: 100
+                type: integer
+              name:
+                example: Parvez
+                type: string
+            type: object
+          type: array
+      type: object
+  securitySchemes:
+    AuthorizationHeader:
+      description: Input your token
+      scheme: bearer
+      type: http
+info:
+  contact:
+    email: abce@email.com
+    name: Parvez
+  description: API usually works as expected. But sometimes its not true.
+  license:
+    name: MIT
+    url: https://en.wikipedia.org/wiki/MIT_License
+  termsOfService: http://someurl.oxox
+  title: Backend API
+  version: 1.0.0
+openapi: 3.0.0
+paths:
+  /api/group/{groupID}/users:
+    get:
+      description: ' Get users related to a specific group.'
+      parameters:
+      - description: Id of a specific group.
+        example: "120"
+        in: path
+        name: groupID
+        required: true
+        schema:
+          description: Id of a specific group.
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+          description: UsersResponse JSON
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: ErrorResponse JSON
+      summary: Get user list of a group.
+      tags:
+      - users
+security:
+- AuthorizationHeader:
+  - read
+  - write
+servers:
+- description: ' Server-1'
+  url: http://www.fake.com
+- description: ' Server-2'
+  url: http://www.fake2.com

@@ -14,6 +14,7 @@ func SetupRoutes() *gin.Engine {
 
 	internal_http.SwaggerRoutes(r)
     api := r.Group(i.Config.GetApiPrefix())
+    
     api_v1 := api.Group(i.Config.GetApiVersion())
 	v1.Routes(api_v1)
 

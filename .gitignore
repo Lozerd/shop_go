@@ -8,11 +8,9 @@
 # Vendor directory
 /vendor/
 
-# Swagger files
-docs/*
-
 # Config files
 *.env
+*.env-docker
 *.yaml
 *.toml
 *.ini
