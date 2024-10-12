@@ -9,8 +9,7 @@ services:
     command: /app/main
     environment:
       - GIN_MODE=release
-    env_file:
-      - .env
+      - APP_ENV=.env-docker
     ports:
       - 8080:8080
     volumes:
@@ -27,7 +26,7 @@ services:
     mem_limit: ${DB_MEM_LIMIT:-1G}
     cpus: ${DB_CPUS:-2}
     env_file:
-      - .env
+      - .env-docker
     environment:
       - PGDATA=/var/lib/postgressql/data/pgdata
     volumes:

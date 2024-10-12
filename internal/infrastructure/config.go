@@ -6,24 +6,31 @@ import (
 	"os"
 	"strings"
 
-	"gopkg.in/yaml.v2"
+	u "github.com/Lozerd/shop_go/pkg/utils"
+	"github.com/joho/godotenv"
 )
 
-type Configuration struct {
-	Server struct {
-		Port string `yaml:"port"`
-		Host string `yaml:"host"`
-	} `yaml:"server"`
-	Database struct {
-		Name string `yaml:"name"`
-		User string `yaml:"user"`
-		Host string `yaml:"host"`
-		Pass string `yaml:"pass"`
-		Port string `yaml:"port"`
-	} `yaml:"database"`
+type Server struct {
+	Port string
+	Host string
 }
 
-var Config Configuration
+type Database struct {
+	Name string
+	User string
+	Host string
+	Pass string
+	Port string
+}
+
+type Configuration struct {
+	Server     Server
+	Database   Database
+	ApiVersion string
+	ApiPrefix  string
+}
+
+var Config *Configuration
 
 func (c *Configuration) GetAddr() string {
 	return strings.Join([]string{c.Server.Host, c.Server.Port}, ":")
@@ -33,19 +40,60 @@ func (c *Configuration) GetDBUrl() string {
 	// host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai
 	return fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s", // sslmode=disable TimeZone=Asia/Shanghai",
-        c.Database.Host, c.Database.User, c.Database.Pass,
+		c.Database.Host, c.Database.User, c.Database.Pass,
 		c.Database.Name, c.Database.Port,
 	)
 }
 
-func LoadConfig() {
-	buf, err := os.ReadFile("configs/development.yaml")
-	if err != nil {
-		log.Panic("Couldn't find development config in configs/development.yaml")
-	}
+func (c *Configuration) GetApiPrefix() string {
+	return fmt.Sprintf("/%s", c.ApiPrefix)
+}
 
-	err = yaml.UnmarshalStrict(buf, &Config)
+func (c *Configuration) GetApiVersion() string {
+	return fmt.Sprintf("/%s", c.ApiVersion)
+}
+
+func (c *Configuration) GetApiBasePath() string {
+	return fmt.Sprintf("/%s/%s", c.ApiPrefix, c.ApiVersion)
+}
+
+func LoadEnv() {
+	app_env := u.StringOrDefault(os.Getenv("APP_ENV"), ".env")
+
+	err := godotenv.Load(app_env)
 	if err != nil {
-		log.Panic("Couldn't parse config")
+		log.Panic("Couldn't locate .env file")
+	}
+}
+
+func LoadConfig() {
+	LoadEnv()
+
+	HOST := u.StringOrDefault(os.Getenv("HOST"), "localhost")
+	PORT := u.StringOrDefault(os.Getenv("PORT"), "8080")
+
+	dbName := u.StringOrDefault(os.Getenv("POSTGRES_NAME"), "dev_shop")
+	dbHost := u.StringOrDefault(os.Getenv("POSTGRES_HOST"), "localhost")
+	dbPort := u.StringOrDefault(os.Getenv("POSTGRES_PORT"), "5432")
+	dbUser := u.StringOrDefault(os.Getenv("POSTGRES_USER"), "dev_shop")
+	dbPass := u.StringOrDefault(os.Getenv("POSTGRES_PASSWORD"), "password")
+
+	apiVersion := u.StringOrDefault(os.Getenv("API_VERSION"), "v1")
+	apiPrefix := u.StringOrDefault(os.Getenv("API_PREFIX"), "api")
+
+	Config = &Configuration{
+		Server: Server{
+			Host: HOST,
+			Port: PORT,
+		},
+		Database: Database{
+			Name: dbName,
+			User: dbUser,
+			Host: dbHost,
+			Pass: dbPass,
+			Port: dbPort,
+		},
+		ApiVersion: apiVersion,
+		ApiPrefix:  apiPrefix,
 	}
 }

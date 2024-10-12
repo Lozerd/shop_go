@@ -11,7 +11,7 @@ COPY go.sum ${WORKDIR}/go.sum
 COPY . ${WORKDIR}
 
 RUN go mod download
-RUN go build -o ${WORKDIR}/main ${WORKDIR}/cmd/shop_go/main.go 
+RUN go build -o ${WORKDIR}/main ${WORKDIR}/cmd/server/main.go 
 
 # Runtime stage
 FROM golang:1.23.2

@@ -49,6 +49,11 @@ cd shop_go
 go mod download
 ```
 
+## Generate swagger docs
+```console
+swag init -g cmd/server/main.go -o docs
+```
+
 ## Run application using air
 ```console
 air
