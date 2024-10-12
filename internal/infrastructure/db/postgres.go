@@ -5,6 +5,7 @@ import (
 
 	i "github.com/Lozerd/shop_go/internal/infrastructure"
     e "github.com/Lozerd/shop_go/internal/domain/entities"
+    a "github.com/Lozerd/shop_go/internal/domain/aggregates"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -13,7 +14,7 @@ var DB *gorm.DB
 
 func Init() {
     DB = NewConnection()
-    DB.AutoMigrate(e.ProductModel{}, e.Order{})
+    DB.AutoMigrate(a.ProductModel{}, e.Order{})
 }
 
 func NewConnection() *gorm.DB {

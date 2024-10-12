@@ -8,6 +8,9 @@
 # Vendor directory
 /vendor/
 
+# SwaggerUI
+docs
+
 # Config files
 *.env
 *.env-docker

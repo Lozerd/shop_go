@@ -1,12 +1,11 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Backend API",
-    "description": "API usually works as expected. But sometimes its not true.",
-    "termsOfService": "http://someurl.oxox",
+    "title": "Shop API",
+    "description": "Shop API designed for learning purposes",
     "contact": {
-      "name": "Parvez",
-      "email": "abce@email.com"
+      "name": "Lozerd",
+      "email": "dmisha29411@gmail.com"
     },
     "license": {
       "name": "MIT",
@@ -16,151 +15,23 @@
   },
   "servers": [
     {
-      "url": "http://www.fake.com",
-      "description": " Server-1"
-    },
-    {
-      "url": "http://www.fake2.com",
-      "description": " Server-2"
+      "url": "http://localhost",
+      "description": " Development"
     }
   ],
-  "paths": {
-    "/api/group/{groupID}/users": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "UsersResponse JSON",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UsersResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "ErrorResponse JSON",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "users"
-        ],
-        "summary": "Get user list of a group.",
-        "description": " Get users related to a specific group.",
-        "parameters": [
-          {
-            "name": "groupID",
-            "in": "path",
-            "description": "Id of a specific group.",
-            "required": true,
-            "example": "120",
-            "schema": {
-              "type": "integer",
-              "format": "int64",
-              "description": "Id of a specific group."
-            }
-          }
-        ]
-      }
-    }
-  },
+  "paths": {},
   "components": {
-    "schemas": {
-      "Error": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string"
-          }
-        }
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "object",
-            "$ref": "#/components/schemas/Error"
-          }
-        }
-      },
-      "RequestHeaders": {
-        "type": "object",
-        "properties": {
-          "Authorization": {
-            "type": "string"
-          }
-        }
-      },
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "description": "User identity",
-            "example": 100
-          },
-          "name": {
-            "type": "string",
-            "example": "Parvez"
-          }
-        }
-      },
-      "UsersResponse": {
-        "type": "object",
-        "properties": {
-          "users": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer",
-                  "description": "User identity",
-                  "example": 100
-                },
-                "name": {
-                  "type": "string",
-                  "example": "Parvez"
-                }
-              }
-            },
-            "example": [
-              {
-                "id": 100,
-                "name": "Parvez"
-              }
-            ]
-          }
-        }
-      }
-    },
     "securitySchemes": {
-      "AuthorizationHeader": {
+      "Jwt-access-token": {
         "type": "http",
-        "description": "Input your token",
+        "description": "JSON Web Token authentication with required prefix \"Bearer\" for common users. Token might be fetched during API authentication flow.",
         "scheme": "bearer"
-      }
-    },
-    "parameters": {
-      "Authorization": {
-        "name": "Authorization",
-        "in": "header",
-        "schema": {
-          "type": "string"
-        }
       }
     }
   },
   "security": [
     {
-      "AuthorizationHeader": [
+      "Jwt-access-token": [
         "read",
         "write"
       ]

@@ -62,7 +62,7 @@ func LoadEnv() {
 
 	err := godotenv.Load(app_env)
 	if err != nil {
-		log.Panic("Couldn't locate .env file")
+		log.Panic(fmt.Sprintf("Couldn't load %s file", app_env))
 	}
 }
 

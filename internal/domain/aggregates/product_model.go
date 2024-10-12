@@ -1,6 +1,6 @@
-package entities
+package aggregates
 
 type ProductModel struct {
 	ID uint `gorm:"primaryKey;autoIncrement"`
-    Title string 
+    Title string  `gorm:"size:255"`
 }

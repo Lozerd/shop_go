@@ -49,10 +49,14 @@ cd shop_go
 go mod download
 ```
 
+## Install go-swagger3
+```console
+go install github.com/parvez3019/go-swagger3@latest
+```
+
 ## Generate swagger docs
 ```console
 go-swagger3 --module-path . --main-file-path ./cmd/server/main.go --output oas.json --schema-without-pkg --generate-yaml true
-swag init -g cmd/server/main.go -o docs
 ```
 
 ## Run application using air
