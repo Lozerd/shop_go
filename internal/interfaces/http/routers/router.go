@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	i "github.com/Lozerd/shop_go/internal/infrastructure"
-	s "github.com/Lozerd/shop_go/internal/interfaces/http/swagger"
+	"github.com/Lozerd/shop_go/internal/interfaces/http"
 	v1 "github.com/Lozerd/shop_go/internal/interfaces/http/routers/v1"
 )
 
@@ -17,7 +17,7 @@ func getBaseRouter() *gin.Engine {
 func SetupRoutes() *gin.Engine {
     r := getBaseRouter()
 
-	s.SwaggerRoutes(r)
+	swagger.SwaggerRoutes(r)
 
 	api := r.Group(i.Config.GetApiPrefix())
     {
