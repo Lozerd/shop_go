@@ -3,8 +3,6 @@ volumes:
 
 services:
   app:
-    mem_limit: ${APP_MEM_LIMIT:-1G}
-    cpus: ${APP_CPUS:-2}
     build: .
     command: /app/main
     environment:
@@ -23,8 +21,6 @@ services:
 
   db:
     image: postgres:12
-    mem_limit: ${DB_MEM_LIMIT:-1G}
-    cpus: ${DB_CPUS:-2}
     env_file:
       - .env-docker
     environment:
@@ -55,6 +51,8 @@ services:
 
   zookeeper:
     image: bitnami/zookeeper:latest
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: yes
     ports:
       - "2181:2181"
 

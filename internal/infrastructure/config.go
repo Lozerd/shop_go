@@ -69,7 +69,7 @@ func LoadEnv() {
 func LoadConfig() {
 	LoadEnv()
 
-	HOST := u.StringOrDefault(os.Getenv("HOST"), "localhost")
+	HOST := u.StringOrDefault(os.Getenv("HOST"), "0.0.0.0")
 	PORT := u.StringOrDefault(os.Getenv("PORT"), "8080")
 
 	dbName := u.StringOrDefault(os.Getenv("POSTGRES_NAME"), "dev_shop")
