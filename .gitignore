@@ -20,6 +20,7 @@ docs
 
 # Config files, but examples
 !*.example.yaml
+!.air.toml
 
 # IDE/editor files
 .vscode/
