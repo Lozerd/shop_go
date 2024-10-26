@@ -3,7 +3,7 @@ package db
 import (
 	"log"
 
-	i "github.com/Lozerd/shop_go/internal/infrastructure"
+	"github.com/Lozerd/shop_go/internal/infrastructure/config"
     e "github.com/Lozerd/shop_go/internal/domain/entities"
     a "github.com/Lozerd/shop_go/internal/domain/aggregates"
 	"gorm.io/driver/postgres"
@@ -18,7 +18,7 @@ func Init() {
 }
 
 func NewConnection() *gorm.DB {
-    db, err := gorm.Open(postgres.Open(i.Config.GetDBUrl()), &gorm.Config{})
+    db, err := gorm.Open(postgres.Open(config.Config.GetDBUrl()), &gorm.Config{})
     if err != nil {
         log.Panic("Couldn't open postgres connection")
     }

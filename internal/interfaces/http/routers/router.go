@@ -3,7 +3,7 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 
-	i "github.com/Lozerd/shop_go/internal/infrastructure"
+	"github.com/Lozerd/shop_go/internal/infrastructure/config"
 	"github.com/Lozerd/shop_go/internal/interfaces/http"
 	v1 "github.com/Lozerd/shop_go/internal/interfaces/http/routers/v1"
 )
@@ -19,9 +19,9 @@ func SetupRoutes() *gin.Engine {
 
 	swagger.SwaggerRoutes(r)
 
-	api := r.Group(i.Config.GetApiPrefix())
+	api := r.Group(config.GetApiPrefix())
     {
-        api_v1 := api.Group(i.Config.GetApiVersion())
+        api_v1 := api.Group(config.GetApiVersion())
         {
             v1.Routes(api_v1)
         }

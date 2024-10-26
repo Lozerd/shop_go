@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Lozerd/shop_go/internal/infrastructure"
+	"github.com/Lozerd/shop_go/internal/infrastructure/config"
 	"github.com/Lozerd/shop_go/internal/infrastructure/db"
 	"github.com/Lozerd/shop_go/internal/interfaces/http/routers"
 	"github.com/Lozerd/shop_go/pkg/logging"
