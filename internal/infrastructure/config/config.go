@@ -4,13 +4,11 @@ import (
 	"errors"
 	"fmt"
 
-	// "log"
 	"os"
 	"strings"
 
-	u "github.com/Lozerd/shop_go/pkg/utils"
+	. "github.com/Lozerd/shop_go/pkg/utils"
 	"github.com/joho/godotenv"
-	// "github.com/joho/godotenv"
 )
 
 type Server struct {
@@ -65,7 +63,7 @@ func GetConfig() *Configuration {
 }
 
 func LoadEnv() (err error) {
-	app_env := u.StringOrDefault(os.Getenv("APP_ENV"), ".env")
+	app_env := StringOrDefault(os.Getenv("APP_ENV"), ".env")
 
 	if app_env == "" {
 		return errors.New("filepath argument must not be empty")
@@ -84,19 +82,19 @@ func LoadEnv() (err error) {
 }
 
 func LoadConfig() {
-	// LoadEnv()
+	LoadEnv()
 
-	HOST := u.StringOrDefault(os.Getenv("HOST"), "0.0.0.0")
-	PORT := u.StringOrDefault(os.Getenv("PORT"), "8080")
+	HOST := StringOrDefault(os.Getenv("HOST"), "0.0.0.0")
+	PORT := StringOrDefault(os.Getenv("PORT"), "8080")
 
-	dbName := u.StringOrDefault(os.Getenv("POSTGRES_NAME"), "dev_shop")
-	dbHost := u.StringOrDefault(os.Getenv("POSTGRES_HOST"), "localhost")
-	dbPort := u.StringOrDefault(os.Getenv("POSTGRES_PORT"), "5432")
-	dbUser := u.StringOrDefault(os.Getenv("POSTGRES_USER"), "dev_shop")
-	dbPass := u.StringOrDefault(os.Getenv("POSTGRES_PASSWORD"), "password")
+	dbName := StringOrDefault(os.Getenv("POSTGRES_NAME"), "dev_shop")
+	dbHost := StringOrDefault(os.Getenv("POSTGRES_HOST"), "localhost")
+	dbPort := StringOrDefault(os.Getenv("POSTGRES_PORT"), "5432")
+	dbUser := StringOrDefault(os.Getenv("POSTGRES_USER"), "dev_shop")
+	dbPass := StringOrDefault(os.Getenv("POSTGRES_PASSWORD"), "password")
 
-	apiVersion := u.StringOrDefault(os.Getenv("API_VERSION"), "v1")
-	apiPrefix := u.StringOrDefault(os.Getenv("API_PREFIX"), "api")
+	apiVersion := StringOrDefault(os.Getenv("API_VERSION"), "v1")
+	apiPrefix := StringOrDefault(os.Getenv("API_PREFIX"), "api")
 
 	Config = &Configuration{
 		Server: Server{
