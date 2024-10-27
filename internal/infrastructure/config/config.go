@@ -3,11 +3,13 @@ package config
 import (
 	"errors"
 	"fmt"
+
 	// "log"
 	"os"
 	"strings"
 
 	u "github.com/Lozerd/shop_go/pkg/utils"
+	"github.com/joho/godotenv"
 	// "github.com/joho/godotenv"
 )
 
@@ -58,24 +60,26 @@ func GetApiBasePath() string {
 	return fmt.Sprintf("/%s/%s", Config.ApiPrefix, Config.ApiVersion)
 }
 
-func GetConfig() any {
+func GetConfig() *Configuration {
 	return Config
 }
 
-func LoadEnv(filepath string) (err error) {
-	// app_env := u.StringOrDefault(os.Getenv("APP_ENV"), ".env")
+func LoadEnv() (err error) {
+	app_env := u.StringOrDefault(os.Getenv("APP_ENV"), ".env")
 
-	// err := godotenv.Load(app_env)
-	// if err != nil {
-	// 	log.Panic(fmt.Sprintf("Couldn't load %s file", app_env))
-	// }
-	if filepath == "" {
+	if app_env == "" {
 		return errors.New("filepath argument must not be empty")
 	}
 
-	if filepath == ".non-existent-env" {
-		return errors.New(fmt.Sprintf("Couldn't load \"%s\" environment file!", filepath))
+    if _, err := os.Stat(app_env); errors.Is(err, os.ErrNotExist) {
+        return fmt.Errorf("Filepath do not exist\nOriginal: %s", err)
 	}
+
+	err = godotenv.Load(app_env)
+	if err != nil {
+		return errors.New(fmt.Sprintf("Couldn't load %s file", app_env))
+	}
+
 	return nil
 }
 

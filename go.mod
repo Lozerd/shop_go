@@ -3,6 +3,7 @@ module github.com/Lozerd/shop_go
 go 1.23.2
 
 require (
+	github.com/andreyvit/diff v0.0.0-20170406064948-c7f18ee00883
 	github.com/gin-gonic/gin v1.10.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.5.1
@@ -11,7 +12,6 @@ require (
 )
 
 require (
-	github.com/andreyvit/diff v0.0.0-20170406064948-c7f18ee00883 // indirect
 	github.com/bytedance/sonic v1.12.3 // indirect
 	github.com/bytedance/sonic/loader v0.2.0 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
