@@ -23,7 +23,7 @@ func TestLoadEnv_ShouldLoadOn_APP_ENV(t *testing.T) {
 	t.Parallel()
 
 	if err := config.LoadEnv(); err == nil {
-		t.Fatal("Should panic on non existent file!")
+		t.Error("Should panic on non existent file!")
 	}
 
 	filename := ".test-env"
@@ -32,27 +32,27 @@ func TestLoadEnv_ShouldLoadOn_APP_ENV(t *testing.T) {
 	defer os.Remove(f.Name())
 
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	expected := "test"
 	content := fmt.Sprintf("TEST_ENV=\"%s\"", expected)
 	if _, err = f.Write([]byte(content)); err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	err = os.Setenv("APP_ENV", filename)
 	defer os.Clearenv()
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	if err = config.LoadEnv(); err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	if envVar := os.Getenv("TEST_ENV"); envVar != expected {
-		t.Fatal("Couldn't load TEST_ENV variable!")
+		t.Errorf("Couldn't load TEST_ENV variable! diff: %s", diff.CharacterDiff(envVar, expected))
 	}
 }
 
@@ -78,12 +78,12 @@ func TestLoadEnv_ShouldLoadVariables(t *testing.T) {
 
 	cwd, err := os.Getwd()
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	dir, err := os.MkdirTemp(cwd, "TestEnvTempDir")
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 	defer os.RemoveAll(dir)
 
@@ -92,17 +92,17 @@ func TestLoadEnv_ShouldLoadVariables(t *testing.T) {
 	defer f.Close()
 
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	if _, err = f.Write([]byte(testEnvContent)); err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	err = os.Setenv("APP_ENV", f.Name())
 	defer os.Clearenv()
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	config.LoadEnv()
@@ -111,16 +111,16 @@ func TestLoadEnv_ShouldLoadVariables(t *testing.T) {
 		splitRes := strings.Split(line, "=")
 
 		if len(splitRes) < 2 {
-			t.Fatal("Couldn't parse env variable")
+			t.Error("Couldn't parse env variable")
 		}
 
 		if envVar := os.Getenv(splitRes[0]); envVar == "" {
-			t.Fatalf("Couldn't load \"%s\" env variable", splitRes[0])
+			t.Errorf("Couldn't load \"%s\" env variable", splitRes[0])
 		}
 	}
 	pgName := os.Getenv("POSTGRES_NAME")
 	if pgName == "" {
-		t.Fatal("Env variable wasn't loaded")
+		t.Error("Env variable wasn't loaded")
 	}
 }
 
@@ -149,24 +149,24 @@ func TestLoadConfig_ShouldLoadVariables(t *testing.T) {
 	defer os.Remove(f.Name())
 
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	if _, err = f.Write([]byte(testEnvContent)); err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	err = os.Setenv("APP_ENV", f.Name())
 	defer os.Clearenv()
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	config.LoadConfig()
 	cfg := config.GetConfig()
 
 	if !cmp.Equal(cfg, expected) {
-		t.Fatalf("Configuration is not equal to expected:\nloaded:   %v\nexpected: %v!", expected, cfg)
+		t.Errorf("Configuration is not equal to expected:\nloaded:   %v\nexpected: %v!", expected, cfg)
 	}
 }
 
@@ -176,17 +176,17 @@ func Test_GetApiBasePath(t *testing.T) {
 	defer f.Close()
 	defer os.Remove(f.Name())
 	if err != nil {
-		t.Fatal(f)
+		t.Error(f)
 	}
 
 	if _, err = f.Write([]byte(testEnvContent)); err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	err = os.Setenv("APP_ENV", f.Name())
 	defer os.Clearenv()
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	config.LoadConfig()
@@ -209,7 +209,7 @@ func Test_GetApiBasePath(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("test %s", tc.name), func(t *testing.T) {
 			if tc.actual != tc.expected {
-				t.Fatalf("%s = %q;\ndiff %q", tc.name, tc.actual, diff.CharacterDiff(tc.actual, tc.expected))
+				t.Errorf("%s = %q;\ndiff %q", tc.name, tc.actual, diff.CharacterDiff(tc.actual, tc.expected))
 			}
 		})
 	}
@@ -221,17 +221,17 @@ func Test_GetAddr(t *testing.T) {
 	defer f.Close()
 	defer os.Remove(f.Name())
 	if err != nil {
-		t.Fatal(f)
+		t.Error(f)
 	}
 
 	if _, err = f.Write([]byte(testEnvContent)); err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	err = os.Setenv("APP_ENV", f.Name())
 	defer os.Clearenv()
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	config.LoadConfig()
@@ -241,28 +241,28 @@ func Test_GetAddr(t *testing.T) {
 	expected := fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port)
 
 	if actual != expected {
-		t.Fatalf("GetAddr = %q;\ndiff %q", actual, diff.CharacterDiff(actual, expected))
+		t.Errorf("GetAddr = %q;\ndiff %q", actual, diff.CharacterDiff(actual, expected))
 
 	}
 }
 
-func Get_DBUrl(t *testing.T) {
+func Test_GetDBUrl(t *testing.T) {
 	filename := ".test-env"
 	f, err := os.Create(filename)
 	defer f.Close()
 	defer os.Remove(f.Name())
 	if err != nil {
-		t.Fatal(f)
+		t.Error(f)
 	}
 
 	if _, err = f.Write([]byte(testEnvContent)); err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	err = os.Setenv("APP_ENV", f.Name())
 	defer os.Clearenv()
 	if err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	config.LoadConfig()
@@ -279,6 +279,52 @@ func Get_DBUrl(t *testing.T) {
 	)
 
 	if actual != expected {
-		t.Fatalf("GetAddr = %q;\ndiff %q", actual, diff.CharacterDiff(actual, expected))
+		t.Errorf("GetAddr = %q;\ndiff %q", actual, diff.CharacterDiff(actual, expected))
+	}
+}
+
+func Test_LoadTestConfig(t *testing.T) {
+	t.Parallel()
+
+	expected := &config.Configuration{
+		Database: config.Database{
+			Name: "test_dev_shop",
+			User: "dev_shop",
+			Host: "localhost",
+			Pass: "password",
+			Port: "5432",
+		},
+		Server: config.Server{
+			Port: "8080",
+			Host: "0.0.0.0",
+		},
+		ApiVersion: "v1",
+		ApiPrefix:  "api",
+	}
+
+	filename := ".test-env"
+	f, err := os.Create(filename)
+	defer f.Close()
+    defer os.Remove(f.Name())
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if _, err = f.Write([]byte(testEnvContent)); err != nil {
+		t.Error(err)
+	}
+
+	err = os.Setenv("APP_ENV", f.Name())
+	defer os.Clearenv()
+	if err != nil {
+		t.Error(err)
+	}
+
+	config.LoadConfig()
+	cfg := config.GetConfig()
+
+	if !cmp.Equal(cfg, expected) {
+		t.Errorf("Configuration is not equal to expected:\nloaded:   %v\nexpected: %v!", expected, cfg)
 	}
 }
