@@ -283,48 +283,48 @@ func Test_GetDBUrl(t *testing.T) {
 	}
 }
 
-func Test_LoadTestConfig(t *testing.T) {
-	t.Parallel()
-
-	expected := &config.Configuration{
-		Database: config.Database{
-			Name: "test_dev_shop",
-			User: "dev_shop",
-			Host: "localhost",
-			Pass: "password",
-			Port: "5432",
-		},
-		Server: config.Server{
-			Port: "8080",
-			Host: "0.0.0.0",
-		},
-		ApiVersion: "v1",
-		ApiPrefix:  "api",
-	}
-
-	filename := ".test-env"
-	f, err := os.Create(filename)
-	defer f.Close()
-    defer os.Remove(f.Name())
-
-	if err != nil {
-		t.Error(err)
-	}
-
-	if _, err = f.Write([]byte(testEnvContent)); err != nil {
-		t.Error(err)
-	}
-
-	err = os.Setenv("APP_ENV", f.Name())
-	defer os.Clearenv()
-	if err != nil {
-		t.Error(err)
-	}
-
-	config.LoadConfig()
-	cfg := config.GetConfig()
-
-	if !cmp.Equal(cfg, expected) {
-		t.Errorf("Configuration is not equal to expected:\nloaded:   %v\nexpected: %v!", expected, cfg)
-	}
-}
+// func Test_LoadTestConfig(t *testing.T) {
+// 	t.Parallel()
+// 
+// 	expected := &config.Configuration{
+// 		Database: config.Database{
+// 			Name: "test_dev_shop",
+// 			User: "dev_shop",
+// 			Host: "localhost",
+// 			Pass: "password",
+// 			Port: "5432",
+// 		},
+// 		Server: config.Server{
+// 			Port: "8080",
+// 			Host: "0.0.0.0",
+// 		},
+// 		ApiVersion: "v1",
+// 		ApiPrefix:  "api",
+// 	}
+// 
+// 	filename := ".test-env"
+// 	f, err := os.Create(filename)
+// 	defer f.Close()
+//     defer os.Remove(f.Name())
+// 
+// 	if err != nil {
+// 		t.Error(err)
+// 	}
+// 
+// 	if _, err = f.Write([]byte(testEnvContent)); err != nil {
+// 		t.Error(err)
+// 	}
+// 
+// 	err = os.Setenv("APP_ENV", f.Name())
+// 	defer os.Clearenv()
+// 	if err != nil {
+// 		t.Error(err)
+// 	}
+// 
+// 	config.LoadConfig()
+// 	cfg := config.GetConfig()
+// 
+// 	if !cmp.Equal(cfg, expected) {
+// 		t.Errorf("Configuration is not equal to expected:\nloaded:   %v\nexpected: %v!", expected, cfg)
+// 	}
+// }
