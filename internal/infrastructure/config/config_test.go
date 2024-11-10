@@ -9,6 +9,7 @@ import (
 	"github.com/Lozerd/shop_go/internal/infrastructure/config"
 	"github.com/andreyvit/diff"
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 const testEnvContent string = `
@@ -165,7 +166,7 @@ func TestLoadConfig_ShouldLoadVariables(t *testing.T) {
 	config.LoadConfig()
 	cfg := config.GetConfig()
 
-	if !cmp.Equal(cfg, expected) {
+	if !cmp.Equal(cfg, expected, cmpopts.IgnoreUnexported(config.Configuration{})) {
 		t.Errorf("Configuration is not equal to expected:\nloaded:   %v\nexpected: %v!", expected, cfg)
 	}
 }
@@ -197,11 +198,11 @@ func Test_GetApiBasePath(t *testing.T) {
 		actual   string
 		expected string
 	}{
-		{name: "GetApiPrefix", actual: config.GetApiPrefix(), expected: fmt.Sprintf("/%s", cfg.ApiPrefix)},
-		{name: "GetApiVersion", actual: config.GetApiVersion(), expected: fmt.Sprintf("/%s", cfg.ApiVersion)},
+		{name: "GetApiPrefix", actual: cfg.GetApiPrefix(), expected: fmt.Sprintf("/%s", cfg.ApiPrefix)},
+		{name: "GetApiVersion", actual: cfg.GetApiVersion(), expected: fmt.Sprintf("/%s", cfg.ApiVersion)},
 		{
 			name:     "GetApiBasePath",
-			actual:   config.GetApiBasePath(),
+			actual:   cfg.GetApiBasePath(),
 			expected: fmt.Sprintf("/%s/%s", cfg.ApiPrefix, cfg.ApiVersion),
 		},
 	}
