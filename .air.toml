@@ -4,9 +4,9 @@ tmp_dir = "build"
 
 [build]
   bin = "build/main"
-  cmd = "go build -o build/main ./cmd/server/main.go"
+  cmd = "go build -o build/main ./cmd/main.go"
   pre_cmd = [
-    "go-swagger3 --module-path . --main-file-path ./cmd/server/main.go --output docs/swaggerui/swagger.json --schema-without-pkg"
+    "go-swagger3 --module-path . --main-file-path ./cmd/main.go --output docs/swaggerui/swagger.json --schema-without-pkg"
   ]
   delay = 1000
   exclude_dir = ["assets", "build", "vendor", "testdata", "docs"]
@@ -29,7 +29,7 @@ tmp_dir = "build"
 [log]
   time = true
   main_only = false
-  silent = false
+  silent = true
 
 [misc]
   clean_on_exit = true

@@ -29,9 +29,10 @@ type Configuration struct {
 	Database   Database
 	ApiVersion string
 	ApiPrefix  string
+    initialized bool
 }
 
-var Config *Configuration
+var config *Configuration
 
 func (c *Configuration) GetAddr() string {
 	return strings.Join([]string{c.Server.Host, c.Server.Port}, ":")
@@ -46,20 +47,23 @@ func (c *Configuration) GetDBUrl() string {
 	)
 }
 
-func GetApiPrefix() string {
-	return fmt.Sprintf("/%s", Config.ApiPrefix)
+func (c *Configuration) GetApiPrefix() string {
+	return fmt.Sprintf("/%s", c.ApiPrefix)
 }
 
-func GetApiVersion() string {
-	return fmt.Sprintf("/%s", Config.ApiVersion)
+func (c *Configuration) GetApiVersion() string {
+	return fmt.Sprintf("/%s", c.ApiVersion)
 }
 
-func GetApiBasePath() string {
-	return fmt.Sprintf("/%s/%s", Config.ApiPrefix, Config.ApiVersion)
+func (c *Configuration)  GetApiBasePath() string {
+	return fmt.Sprintf("/%s/%s", c.ApiPrefix, c.ApiVersion)
 }
 
 func GetConfig() *Configuration {
-	return Config
+    if config == nil || !config.initialized {
+        LoadConfig()
+    }
+	return config
 }
 
 func LoadEnv() (err error) {
@@ -96,7 +100,7 @@ func LoadConfig() {
 	apiVersion := StringOrDefault(os.Getenv("API_VERSION"), "v1")
 	apiPrefix := StringOrDefault(os.Getenv("API_PREFIX"), "api")
 
-	Config = &Configuration{
+	config = &Configuration{
 		Server: Server{
 			Host: HOST,
 			Port: PORT,
@@ -110,5 +114,6 @@ func LoadConfig() {
 		},
 		ApiVersion: apiVersion,
 		ApiPrefix:  apiPrefix,
+        initialized: true,
 	}
 }

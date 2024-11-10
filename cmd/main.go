@@ -1,14 +1,9 @@
 package main
 
 import (
-	"github.com/Lozerd/shop_go/internal/infrastructure/config"
-	"github.com/Lozerd/shop_go/internal/infrastructure/db"
-	"github.com/Lozerd/shop_go/internal/interfaces/http/routers"
-	"github.com/Lozerd/shop_go/pkg/logging"
+	"github.com/Lozerd/shop_go/internal/infrastructure/dependencies"
+	"github.com/Lozerd/shop_go/internal/interfaces/http/server"
 )
-
-
-
 
 // @Version 1.0.0
 // @Title Shop API
@@ -21,10 +16,11 @@ import (
 // @Security Jwt-access-token read write
 // @SecurityScheme Jwt-access-token http bearer JSON Web Token authentication with required prefix "Bearer" for common users. Token might be fetched during API authentication flow.
 func main() {
-	config.LoadConfig()
-	logging.InitLogging()
-	db.Init()
+	// logging.InitLogging()
 
-	r := routers.SetupRoutes()
-	r.Run(config.Config.GetAddr())
+    c := dependencies.Init()
+    err := c.Invoke(server.NewServer)
+    if err != nil {
+        panic(err)
+    }
 }

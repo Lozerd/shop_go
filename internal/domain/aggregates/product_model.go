@@ -7,12 +7,12 @@ import (
 
 type ProductModel struct {
 	base.Base
-	Title    string   `gorm:"size:255"`
+    Title    string   `gorm:"size:255;"`
 
     CategoryID uint
-	Category Category `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;`
+	Category Category `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
     ProductID uint
-	Product  Product  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;`
+    Product  Product  `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 // Table "aggregate_product_model" as ProductModel {
