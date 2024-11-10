@@ -1,9 +1,15 @@
 package main
 
 import (
+	"log"
+
 	"github.com/Lozerd/shop_go/internal/infrastructure/dependencies"
+	"github.com/Lozerd/shop_go/internal/interfaces/http/client"
 	"github.com/Lozerd/shop_go/internal/interfaces/http/server"
+	"golang.org/x/sync/errgroup"
 )
+
+var g errgroup.Group
 
 // @Version 1.0.0
 // @Title Shop API
@@ -19,8 +25,14 @@ func main() {
 	// logging.InitLogging()
 
     c := dependencies.Init()
-    err := c.Invoke(server.NewServer)
-    if err != nil {
-        panic(err)
+    g.Go(func() error {
+        return c.Invoke(server.NewServer)
+    })
+    g.Go(func() error {
+        return c.Invoke(client.NewClient)
+    })
+
+    if err := g.Wait(); err != nil {
+        log.Fatal(err)
     }
 }

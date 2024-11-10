@@ -4,6 +4,7 @@
 - [ ] Learn Golang
 - [ ] Learn Kafka
 - [ ] Learn DDD
+- [ ] Learn HTMX
 - [ ] Practice and gain new skills
 
 # Project's main dependencies

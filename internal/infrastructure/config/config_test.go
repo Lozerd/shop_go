@@ -238,7 +238,7 @@ func Test_GetAddr(t *testing.T) {
 	config.LoadConfig()
 	cfg := config.GetConfig()
 
-	actual := cfg.GetAddr()
+	actual := cfg.GetServerAddr()
 	expected := fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port)
 
 	if actual != expected {

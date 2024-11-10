@@ -3,14 +3,17 @@ package routers
 import (
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
 	"github.com/Lozerd/shop_go/internal/infrastructure/config"
 	v1 "github.com/Lozerd/shop_go/internal/interfaces/http/routers/v1"
 )
 
-func getBaseRouter() *gin.Engine {
-	r := gin.Default()
+func getBaseRouter(c *config.Configuration) *gin.Engine {
+	r := gin.New()
+    r.Use(gin.Recovery())
+    r.Use(cors.New(c.CorsConfig))
 	r.SetTrustedProxies(nil)
 	return r
 }
@@ -24,7 +27,7 @@ func SwaggerRoutes(r *gin.Engine) {
 }
 
 func SetupRoutes(c *config.Configuration) *gin.Engine {
-	r := getBaseRouter()
+	r := getBaseRouter(c)
 
 	SwaggerRoutes(r)
 
