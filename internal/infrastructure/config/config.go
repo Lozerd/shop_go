@@ -106,7 +106,10 @@ func LoadConfig() {
 	CLIENT_HOST := StringOrDefault(os.Getenv("CLIENT_HOST"), "0.0.0.0")
 	CLIENT_PORT := StringOrDefault(os.Getenv("CLIENT_PORT"), "8000")
 
-	CORS_ORIGINS := strings.Split(os.Getenv("CORS_ORIGINS"), ",")
+    var CORS_ORIGINS []string
+	if origins := os.Getenv("CORS_ORIGINS"); origins != "" {
+		CORS_ORIGINS = strings.Split(origins, ",")
+	}
 
 	dbName := StringOrDefault(os.Getenv("POSTGRES_NAME"), "dev_shop")
 	dbHost := StringOrDefault(os.Getenv("POSTGRES_HOST"), "localhost")
@@ -136,8 +139,8 @@ func LoadConfig() {
 			Pass: dbPass,
 			Port: dbPort,
 		},
-		ApiVersion:  apiVersion,
-		ApiPrefix:   apiPrefix,
-		initialized: true,
+		ApiVersion: apiVersion,
+		ApiPrefix:  apiPrefix,
+		// initialized: true,
 	}
 }
