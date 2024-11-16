@@ -16,16 +16,25 @@ func getBaseClient(c *config.Configuration) *gin.Engine {
 	return r
 }
 
-type ClientDeps struct {
-    dig.In
+func IndexHandler(c *gin.Context) {
+}
 
-    Config *config.Configuration
+func SetupRoutes(c *config.Configuration) *gin.Engine {
+	r := getBaseClient(c)
+	r.GET("/", IndexHandler)
+	return r
+}
+
+type ClientDeps struct {
+	dig.In
+
+	Config *config.Configuration
 }
 
 func NewClient(d ClientDeps) error {
 	client := &http.Server{
 		Addr:    d.Config.GetClientAddr(),
-		Handler: getBaseClient(d.Config),
+		Handler: SetupRoutes(d.Config),
 	}
 	return client.ListenAndServe()
 }

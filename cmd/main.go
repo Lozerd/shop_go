@@ -24,15 +24,15 @@ var g errgroup.Group
 func main() {
 	// logging.InitLogging()
 
-    c := dependencies.Init()
-    g.Go(func() error {
-        return c.Invoke(server.NewServer)
-    })
-    g.Go(func() error {
-        return c.Invoke(client.NewClient)
-    })
+	c := dependencies.Init()
+	g.Go(func() error {
+		return c.Invoke(server.NewServer)
+	})
+	g.Go(func() error {
+		return c.Invoke(client.NewClient)
+	})
 
-    if err := g.Wait(); err != nil {
-        log.Fatal(err)
-    }
+	if err := g.Wait(); err != nil {
+		log.Fatal(err)
+	}
 }
