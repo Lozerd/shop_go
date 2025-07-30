@@ -28,7 +28,7 @@ go install github.com/swaggo/swag/cmd/swag@latest
 
 2. Generate swagger docs:
 ```bash
-swag init -g cmd/server/main.go -o docs
+swag init -d ./cmd/server/ -o docs --v3.1 --parseInternal
 ```
 
 3. Access swagger at:
