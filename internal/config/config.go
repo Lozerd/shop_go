@@ -16,6 +16,7 @@ type DB struct {
 type Config struct {
 	GinMode string `env:"GIN_MODE,default=release"`
 	Port    int    `env:"PORT,default=8000"`
+	TrustedProxies []string `env:"TRUSTED_PROXIES"`
 	DB
 }
 
@@ -32,7 +33,7 @@ func Load() (*Config, error) {
 	}
 	if !validateGinMode(config.GinMode) {
 		msg := "Invalid gin mode: %s, should be one of [debug, release]"
-		err := ErrInvalidGinMode
+		err := ErrInvalidGinMode{value: config.GinMode}
 		log.Error().Err(err).Msgf(msg, config.GinMode)
 		return nil, err
 	}

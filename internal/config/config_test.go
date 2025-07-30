@@ -58,13 +58,39 @@ func TestRequiredEnv(t *testing.T) {
 func TestDefaultValues(t *testing.T) {
 	os.Clearenv()
 	os.Setenv("DB_NAME", "postgres")
-	os.Setenv("DB_USER", "postgres")
 	os.Setenv("DB_PASSWORD", "postgres")
+	os.Setenv("DB_USER", "postgres")
 	cfg, err := Load()
 	assert.NoError(t, err)
 	assert.Equal(t, "release", cfg.GinMode)
 	assert.Equal(t, 8000, cfg.Port)
 	assert.Equal(t, "localhost", cfg.DB.Host)
 	assert.Equal(t, 5432, cfg.DB.Port)
+}
 
+func TestInvalidGinMode(t *testing.T) {
+	os.Clearenv()
+	os.Setenv("DB_NAME", "postgres")
+	os.Setenv("DB_PASSWORD", "postgres")
+	os.Setenv("DB_USER", "postgres")
+	os.Setenv("GIN_MODE", "invalid")
+
+	if _, err := Load(); assert.Error(t, err) {
+		if _, ok := err.(ErrInvalidGinMode); !ok {
+			t.Errorf("Expected ErrInvalidGinMode, got %T", err)
+		}
+		assert.Equal(t, "invalid gin mode [invalid]", err.Error())
+	}
+}
+
+func TestTrustedProxies(t *testing.T) {
+	os.Clearenv()
+	os.Setenv("DB_NAME", "postgres")
+	os.Setenv("DB_PASSWORD", "postgres")
+	os.Setenv("DB_USER", "postgres")
+	os.Setenv("TRUSTED_PROXIES", "127.0.0.1")
+
+	cfg, err := Load()
+	assert.NoError(t, err)
+	assert.Equal(t, []string{"127.0.0.1"}, cfg.TrustedProxies)
 }

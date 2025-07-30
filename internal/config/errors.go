@@ -1,7 +1,9 @@
 package config
 
-import "errors"
+type ErrInvalidGinMode struct {
+	value string
+}
 
-var (
-	ErrInvalidGinMode = errors.New("invalid gin mode")
-)
+func (e ErrInvalidGinMode) Error() string {
+	return "invalid gin mode [" + e.value + "]"
+}
