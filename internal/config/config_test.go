@@ -66,6 +66,7 @@ func TestDefaultValues(t *testing.T) {
 	assert.Equal(t, 8000, cfg.Port)
 	assert.Equal(t, "localhost", cfg.DB.Host)
 	assert.Equal(t, 5432, cfg.DB.Port)
+	assert.Equal(t, "api", cfg.ApiPrefix)
 }
 
 func TestInvalidGinMode(t *testing.T) {
@@ -79,7 +80,7 @@ func TestInvalidGinMode(t *testing.T) {
 		if _, ok := err.(ErrInvalidGinMode); !ok {
 			t.Errorf("Expected ErrInvalidGinMode, got %T", err)
 		}
-		assert.Equal(t, "invalid gin mode [invalid]", err.Error())
+		assert.Equal(t, "invalid gin mode [invalid], should be one of [debug, release].", err.Error())
 	}
 }
 
@@ -93,4 +94,27 @@ func TestTrustedProxies(t *testing.T) {
 	cfg, err := Load()
 	assert.NoError(t, err)
 	assert.Equal(t, []string{"127.0.0.1"}, cfg.TrustedProxies)
+}
+
+func TestGetAddr(t *testing.T) {
+	os.Clearenv()
+	os.Setenv("DB_NAME", "postgres")
+	os.Setenv("DB_PASSWORD", "postgres")
+	os.Setenv("DB_USER", "postgres")
+
+	cfg, err := Load()
+	assert.NoError(t, err)
+	assert.Equal(t, ":8000", cfg.GetAddr())
+}
+
+func TestGetApiPrefix(t *testing.T) {
+	os.Clearenv()
+	os.Setenv("DB_NAME", "postgres")
+	os.Setenv("DB_PASSWORD", "postgres")
+	os.Setenv("DB_USER", "postgres")
+	os.Setenv("API_PREFIX", "different")
+
+	cfg, err := Load()
+	assert.NoError(t, err)
+	assert.Equal(t, "/different", cfg.GetApiPrefix())
 }

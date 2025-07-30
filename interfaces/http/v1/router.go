@@ -1,16 +1,10 @@
 package v1
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/lozerd/shop_go/interfaces/http/v1/products"
+)
 
-func NewRouter(r *gin.Engine) {
-	r.GET("/accounts", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello World!",
-		})
-	})
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello World!",
-		})
-	})
+func NewRouter(r *gin.RouterGroup) {
+	products.RegisterRoutes(r)
 }

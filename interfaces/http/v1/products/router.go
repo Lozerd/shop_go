@@ -2,17 +2,20 @@ package products
 
 import "github.com/gin-gonic/gin"
 
+// ShowAccount godoc
+//
+//	@Summary		Show an account1
+//	@Description	get string by ID
+//	@Tags			products
+//	@Success		200	{object}	map[string]string	"application/json"
+//	@Router			/api/v1/products/all/ [get]
 func GetProducts(c *gin.Context) {
-
-}
-func NewRouter(r *gin.Engine) {
-	// @Summary Get all products
-	// @Description Get all products
-	// @Tags Products
-	// @Accept json
-	// @Produce json
-	// @Success 200 {object} Product
-	// @Router /products [get]
-	r.GET("/products", GetProducts)
+	c.JSON(200, gin.H{
+		"message": "products",
+	})
 }
 
+func RegisterRoutes(r *gin.RouterGroup) {
+	productsGroup := r.Group("/products")
+	productsGroup.GET("/all/", GetProducts)
+}

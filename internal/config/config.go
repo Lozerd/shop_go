@@ -1,6 +1,8 @@
 package config
 
 import (
+	"fmt"
+
 	"github.com/Netflix/go-env"
 	"github.com/rs/zerolog/log"
 )
@@ -14,28 +16,48 @@ type DB struct {
 }
 
 type Config struct {
-	GinMode string `env:"GIN_MODE,default=release"`
-	Port    int    `env:"PORT,default=8000"`
+	GinMode        string   `env:"GIN_MODE,default=release"`
+	ApiPrefix      string   `env:"API_PREFIX,default=api"`
+	Port           int      `env:"PORT,default=8000"`
 	TrustedProxies []string `env:"TRUSTED_PROXIES"`
 	DB
+}
+
+func (c *Config) GetApiPrefix() string {
+	return fmt.Sprintf("/%s", c.ApiPrefix)
+}
+
+func (c *Config) GetAddr() string {
+	return fmt.Sprintf(":%d", c.Port)
 }
 
 func validateGinMode(mode string) bool {
 	return mode == "debug" || mode == "release"
 }
 
+var config *Config
+
 func Load() (*Config, error) {
-	var config Config
-	if _, err := env.UnmarshalFromEnviron(&config); err != nil {
-		msg := "Could not parse environment variables: %s"
-		log.Error().Err(err).Msg(msg)
+	var c Config
+	if _, err := env.UnmarshalFromEnviron(&c); err != nil {
+		log.Error().Err(err)
 		return nil, err
 	}
-	if !validateGinMode(config.GinMode) {
-		msg := "Invalid gin mode: %s, should be one of [debug, release]"
-		err := ErrInvalidGinMode{value: config.GinMode}
-		log.Error().Err(err).Msgf(msg, config.GinMode)
+	if !validateGinMode(c.GinMode) {
+		err := ErrInvalidGinMode{value: c.GinMode}
+		log.Error().Err(err).Msgf(err.Error(), c.GinMode)
 		return nil, err
 	}
-	return &config, nil
+	return &c, nil
+}
+
+func GetConfig() *Config {
+	if config == nil {
+		c, err := Load()
+		if err != nil {
+			log.Fatal().Err(err).Msg("Could not load config")
+		}
+		config = c
+	}
+	return config
 }

@@ -5,5 +5,5 @@ type ErrInvalidGinMode struct {
 }
 
 func (e ErrInvalidGinMode) Error() string {
-	return "invalid gin mode [" + e.value + "]"
+	return "invalid gin mode [" + e.value + "], should be one of [debug, release]."
 }

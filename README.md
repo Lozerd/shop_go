@@ -28,13 +28,29 @@ go install github.com/swaggo/swag/cmd/swag@latest
 
 2. Generate swagger docs:
 ```bash
-swag init -d ./cmd/server/ -o docs --v3.1 --parseInternal
+swag init -d ./cmd/server,interfaces/http/ -o docs --v3.1 --parseDependency
 ```
 
 3. Access swagger at:
 ```
 http://localhost:8000/docs
 ```
+
+## Migrations
+
+1. Install Atlas from macOS or Linux by running:
+```bash
+curl -sSf https://atlasgo.sh | sh
+```
+
+2. Install the provider by running:
+```bash
+go get -u ariga.io/atlas-provider-gorm
+```
+
+
+
+2.
 
 ## Development with Air (Live Reload)
 
