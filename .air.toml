@@ -4,10 +4,7 @@ tmp_dir = "build"
 
 [build]
   bin = "build/main"
-  cmd = "go build -o build/main ./cmd/main.go"
-  pre_cmd = [
-    "go-swagger3 --module-path . --main-file-path ./cmd/main.go --output docs/swaggerui/swagger.json --schema-without-pkg"
-  ]
+  cmd = "go build -o build/main ./cmd/server/main.go"
   delay = 1000
   exclude_dir = ["assets", "build", "vendor", "testdata", "docs"]
   exclude_regex = ["_test.go"]
