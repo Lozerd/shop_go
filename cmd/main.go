@@ -1,32 +1,28 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
 	"github.com/lozerd/shop_go/infrastructure/db/postgres"
+	"github.com/lozerd/shop_go/interfaces/client"
 	swagger "github.com/lozerd/shop_go/interfaces/http"
 	routerV1 "github.com/lozerd/shop_go/interfaces/http/v1"
 	"github.com/lozerd/shop_go/internal/config"
-
-	_ "github.com/lozerd/shop_go/docs"
 )
 
-// @title						Shop API
-// @description				Shop API.
-// @securityDefinitions.basic	BasicAuth
 func main() {
 	godotenv.Load()
 	cfg := config.GetConfig()
 	postgres.Ping()
-	fmt.Println(postgres.GetDSN())
+	postgres.Migrate()
 
 	gin.SetMode(cfg.GinMode)
 
 	r := gin.Default()
 	r.SetTrustedProxies(cfg.TrustedProxies)
+
+	client.NewRouter(r)
 	swagger.NewRouter(r)
 
 	api := r.Group(cfg.GetApiPrefix())

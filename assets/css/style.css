@@ -1,0 +1,188 @@
+:root {
+  --radius: 12px;
+  --shadow: 0 12px 32px rgba(0,0,0,0.08);
+  --bg: #f7f9fc;
+  --card-bg: #ffffff;
+  --accent: #ff6b35;
+  --text: #1f2d3a;
+  --muted: #6b7a91;
+  --radius-small: 6px;
+  font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.45;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.site-header {
+  background: #fff;
+  border-bottom: 1px solid #e6ebf2;
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.logo, .logo:link, .logo:visited {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.logo:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.nav {
+  margin-left: auto;
+  display: flex;
+  gap: 16px;
+}
+
+.nav-item {
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: var(--radius-small);
+  transition: background .2s;
+}
+.nav-item:hover {
+  background: rgba(255,107,53,0.08);
+  color: var(--accent);
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+  padding: 24px 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+}
+.list li + li {
+  margin-top: 8px;
+}
+.list a {
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background .2s;
+}
+.list a:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+.search-form {
+  display: flex;
+  gap: 8px;
+}
+.search-form input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #dfe3ea;
+  border-radius: var(--radius-small);
+  outline: none;
+}
+.search-form button {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: var(--radius-small);
+  cursor: pointer;
+  font-weight: 600;
+  transition: filter .2s;
+}
+.search-form button:hover {
+  filter: brightness(1.05);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.recipe-card {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 20px;
+}
+.recipe-card h2 {
+  margin-top: 0;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.site-footer {
+  padding: 24px 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+  background: #fff;
+  border-top: 1px solid #e6ebf2;
+}
+
+.button-primary {
+  background: var(--accent);
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: filter .2s;
+}
+.button-primary:hover {
+  filter: brightness(1.05);
+}

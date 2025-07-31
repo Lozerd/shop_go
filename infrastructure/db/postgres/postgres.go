@@ -3,11 +3,14 @@ package postgres
 import (
 	"fmt"
 
+	"github.com/lozerd/shop_go/domain/product"
+	"github.com/lozerd/shop_go/infrastructure/logging"
 	"github.com/lozerd/shop_go/internal/config"
-	"github.com/rs/zerolog/log"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
+var logger = logging.NewLogger("postgres", true)
 
 func GetDSN() string {
 	cfg := config.GetConfig()
@@ -24,7 +27,7 @@ func GetDSN() string {
 func GetDB() (*gorm.DB, error) {
 	db, err := gorm.Open(postgres.Open(GetDSN()), &gorm.Config{})
 	if err != nil {
-		log.Error().Err(err).Msg("failed to connect to database")
+		logger.Error().Err(err).Msg("failed to connect to database")
 		return nil, err
 	}
 	return db, nil
@@ -33,17 +36,30 @@ func GetDB() (*gorm.DB, error) {
 func Ping() {
 	db, err := GetDB()
 	if err != nil {
-		log.Fatal().Err(err).Msg("failed to ping database")
+		logger.Fatal().Err(err).Msg("failed to ping database")
 	}
 
 	sqlDB, err := db.DB()
 	defer sqlDB.Close()
 
 	if err != nil {
-		log.Fatal().Err(err).Msg("failed to ping database")
+		logger.Fatal().Err(err).Msg("failed to ping database")
 	}
 
 	if err := sqlDB.Ping(); err != nil {
-		log.Fatal().Err(err).Msg("failed to ping database")
+		logger.Fatal().Err(err).Msg("failed to ping database")
 	}
+}
+
+func Migrate() {
+	db, err := GetDB()
+	if err != nil {
+		logger.Fatal().Err(err).Msg("database migration couln't establish connection")
+	}
+
+	err = db.AutoMigrate(&product.Product{})
+	if err != nil {
+		logger.Fatal().Err(err).Msg("database migration failed")
+	}
+	logger.Info().Msg("database migration done")
 }

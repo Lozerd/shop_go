@@ -1,0 +1,6 @@
+{{ define "product_form" }}
+<form hx-post="/products/" hx-swap="beforeend" hx-target="#products" method="POST" hx-on::after-request="if(event.detail.successful) this.reset()">
+    <input type="text" name="name" placeholder="Name">
+    <button type="submit">Submit</button>
+</form>
+{{ end }}

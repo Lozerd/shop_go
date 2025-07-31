@@ -1,0 +1,47 @@
+{{ block "content" .}}
+<div class="container main-grid">
+    <aside class="sidebar">
+        <div class="card">
+            <h2>Categories</h2>
+            <ul class="list">
+                <li>
+                    <a href="#" hx-get="/recipes.html?category=breakfast" hx-target="#main-content">Breakfast</a>
+                </li>
+                <li>
+                    <a href="#" hx-get="/recipes.html?category=dinner" hx-target="#main-content">Dinner</a>
+                </li>
+                <li>
+                    <a href="#" hx-get="/recipes.html?category=dessert" hx-target="#main-content">Dessert</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card">
+            <h2>Search</h2>
+            <form hx-get="/recipes.html" hx-target="#main-content" class="search-form">
+                <input name="q" placeholder="Search recipes…" />
+                <button type="submit" class="button-primary">Go</button>
+            </form>
+        </div>
+    </aside>
+    <main id="main-content" class="content">
+        <div class="card">
+            <h2>Welcome to CookFlow</h2>
+            <p>Select a recipe from the sidebar or search to get started.</p>
+        </div>
+        <div class="card">
+            <h2>Popular Recipes</h2>
+            <ul>
+                <li>
+                    <a href="#" hx-get="/fragments/recipe1.html" hx-target="#main-content" hx-swap="innerHTML">Spaghetti with Tomato</a>
+                </li>
+                <li>
+                    <a href="#" hx-get="/fragments/recipe2.html" hx-target="#main-content" hx-swap="innerHTML">Chicken Curry</a>
+                </li>
+            </ul>
+        </div>
+    </main>
+</div>
+{{ end }}
+{{ define "main" }}
+{{ template "base" . }}
+{{ end }}

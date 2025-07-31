@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"sync"
 
-	"github.com/lozerd/shop_go/infrastructure/templates"
+	"github.com/lozerd/shop_go/infrastructure/templates/swagger"
 
 	"golang.org/x/net/webdav"
 
@@ -102,7 +102,7 @@ func CustomWrapHandler(config *Config, handler *webdav.Handler) gin.HandlerFunc 
 		matches := matcher.FindStringSubmatch(ctx.Request.RequestURI)
 
 		if len(matches) != 3 {
-			ctx.String(http.StatusNotFound, http.StatusText(http.StatusNotFound))
+			ctx.Redirect(http.StatusTemporaryRedirect, "/swagger/index.html")
 
 			return
 		}

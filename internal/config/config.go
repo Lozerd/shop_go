@@ -4,8 +4,10 @@ import (
 	"fmt"
 
 	"github.com/Netflix/go-env"
-	"github.com/rs/zerolog/log"
+	"github.com/lozerd/shop_go/infrastructure/logging"
 )
+
+var logger = logging.NewLogger("config", false)
 
 type DB struct {
 	Name     string `env:"DB_NAME,required=true"`
@@ -16,6 +18,7 @@ type DB struct {
 }
 
 type Config struct {
+	Debug          bool     `env:"DEBUG,default=false"`
 	GinMode        string   `env:"GIN_MODE,default=release"`
 	ApiPrefix      string   `env:"API_PREFIX,default=api"`
 	Port           int      `env:"PORT,default=8000"`
@@ -40,12 +43,12 @@ var config *Config
 func Load() (*Config, error) {
 	var c Config
 	if _, err := env.UnmarshalFromEnviron(&c); err != nil {
-		log.Error().Err(err)
+		logger.Error().Err(err)
 		return nil, err
 	}
 	if !validateGinMode(c.GinMode) {
 		err := ErrInvalidGinMode{value: c.GinMode}
-		log.Error().Err(err).Msgf(err.Error(), c.GinMode)
+		logger.Error().Err(err).Msgf(err.Error(), c.GinMode)
 		return nil, err
 	}
 	return &c, nil
@@ -55,7 +58,7 @@ func GetConfig() *Config {
 	if config == nil {
 		c, err := Load()
 		if err != nil {
-			log.Fatal().Err(err).Msg("Could not load config")
+			logger.Fatal().Err(err).Msg("Could not load config")
 		}
 		config = c
 	}

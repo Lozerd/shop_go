@@ -1,0 +1,59 @@
+{{ define "title" }}Recipes - CookFlow{{ end }}
+{{ block "content" .}}
+<div class="container main-grid">
+    <aside class="sidebar">
+        <div class="card">
+            <h2>Filter</h2>
+            <p>Category and search would go here.</p>
+        </div>
+    </aside>
+    <main id="main-content" class="content">
+        <div class="card">
+            <h2>All Recipes1</h2>
+            <div class="recipe-card">
+                <div>
+                    <div class="badge">Easy</div>
+                    <h3>Spaghetti with Tomato</h3>
+                    <p>Classic tomato pasta with fresh herbs.</p>
+                    <p>
+                        <a href="#" hx-get="/fragments/recipe1.html" hx-target="#main-content">View details</a>
+                    </p>
+                </div>
+                <div>
+                    <div class="card">
+                        <p>
+                            <strong>Cook time:</strong> 30 mins
+                        </p>
+                        <p>
+                            <strong>Servings:</strong> 2
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="recipe-card" style="margin-top:16px;">
+                <div>
+                    <div class="badge">Medium</div>
+                    <h3>Chicken Curry</h3>
+                    <p>Spicy and creamy curry served with rice.</p>
+                    <p>
+                        <a href="#" hx-get="/fragments/recipe2.html" hx-target="#main-content">View details</a>
+                    </p>
+                </div>
+                <div>
+                    <div class="card">
+                        <p>
+                            <strong>Cook time:</strong> 45 mins
+                        </p>
+                        <p>
+                            <strong>Servings:</strong> 4
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{{ end }}
+{{ define "recipes" }}
+{{ template "base" . }}
+{{ end }}

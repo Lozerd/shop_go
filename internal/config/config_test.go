@@ -62,6 +62,7 @@ func TestDefaultValues(t *testing.T) {
 	os.Setenv("DB_USER", "postgres")
 	cfg, err := Load()
 	assert.NoError(t, err)
+	assert.Equal(t, "debug", false)
 	assert.Equal(t, "release", cfg.GinMode)
 	assert.Equal(t, 8000, cfg.Port)
 	assert.Equal(t, "localhost", cfg.DB.Host)
