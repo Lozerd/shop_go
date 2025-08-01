@@ -7,6 +7,6 @@ import (
 
 type IProductService interface {
 	List() ([]product.Product, error)
-	Create(dto dp.ProductDTO) (*product.Product, error)
+	Create(dto dp.ProductInDTO) (*product.Product, error)
 	Delete(id int) error
 }

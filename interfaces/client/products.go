@@ -24,15 +24,11 @@ func getProductService() (as.IProductService, error) {
 	}
 
 	service := ps.NewProductService(rp.NewProductRepository(db))
-	if err != nil {
-		return nil, nil
-	}
-
-	return service, err
+	return service, nil
 }
 
 func CreateProductView(c *gin.Context) {
-	form := dp.ProductDTO{}
+	form := dp.ProductInDTO{}
 	if err := c.ShouldBind(&form); err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return

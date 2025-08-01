@@ -17,7 +17,7 @@ func (s *ProductService) List() ([]product.Product, error) {
 	return s.repo.GetAll()
 }
 
-func (s *ProductService) Create(dto dp.ProductDTO) (*product.Product, error) {
+func (s *ProductService) Create(dto dp.ProductInDTO) (*product.Product, error) {
 	return s.repo.Save(&product.Product{Name: dto.Name})
 }
 

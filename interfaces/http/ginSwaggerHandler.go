@@ -95,7 +95,6 @@ func CustomWrapHandler(config *Config, handler *webdav.Handler) gin.HandlerFunc 
 	return func(ctx *gin.Context) {
 		if ctx.Request.Method != http.MethodGet {
 			ctx.AbortWithStatus(http.StatusMethodNotAllowed)
-
 			return
 		}
 
@@ -103,7 +102,6 @@ func CustomWrapHandler(config *Config, handler *webdav.Handler) gin.HandlerFunc 
 
 		if len(matches) != 3 {
 			ctx.Redirect(http.StatusTemporaryRedirect, "/swagger/index.html")
-
 			return
 		}
 

@@ -4,7 +4,7 @@ tmp_dir = "build"
 
 [build]
   bin = "build/main"
-  pre_cmd = ["swag init -d ./cmd,interfaces/http/ -o docs --v3.1 --parseDependency"]
+  pre_cmd = ["swag init -d ./cmd,interfaces/http/ -o infrastructure/templates/swagger --outputTypes json --v3.1 --parseDependency"]
   cmd = "go build -o build/main ./cmd/main.go"
   delay = 1000
   exclude_dir = ["assets", "build", "vendor", "testdata", "docs"]

@@ -9,7 +9,7 @@
 /vendor/
 
 # SwaggerUI
-docs
+/infrastructure/templates/swagger/swagger.json
 
 # Config files
 *.env
